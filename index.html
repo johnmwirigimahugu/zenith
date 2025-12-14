@@ -58,9 +58,13 @@
     });
   },
   restoreScroll() {
-    if (this.scrollPositions[this.section]) {
-      window.scrollTo(0, this.scrollPositions[this.section]);
-    }
+    this.$nextTick(() => {
+      if (this.scrollPositions[this.section]) {
+        window.scrollTo(0, this.scrollPositions[this.section]);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    });
   }
 }">
   <!-- HEADER: Sticky navigation -->
@@ -83,8 +87,8 @@
         <button @click="section='api'; location.hash='api'" :class="section==='api' && 'text-accent'" class="hover:text-accent transition-colors">API</button>
         <a href="https://github.com/johnmwirigimahugu/zenith" class="hover:text-accent transition-colors">GitHub</a>
       </nav>
-      <!-- Mobile menu toggle (simplified, expand if needed) -->
-      <button class="md:hidden">Menu</button>
+      <!-- Mobile menu toggle -->
+      <button class="md:hidden" @click="section='home'">Menu</button>
     </div>
   </header>
 
@@ -103,80 +107,92 @@
       <div class="grid md:grid-cols-3 gap-8 mb-12">
         <div class="p-6 bg-white rounded-xl border">
           <h3 class="font-semibold text-lg">Zenith PHP</h3>
-          <p class="text-muted mt-2">A full MVC-capable PHP framework in a single file, including routing, ORM, auth, and more.</p>
+          <p class="text-muted mt-2">A full MVC-capable PHP framework in a single file (zen.php), including routing, ORM, auth, caching, queue, events, logging, and CLI.</p>
         </div>
         <div class="p-6 bg-white rounded-xl border">
           <h3 class="font-semibold text-lg">Zenith JS</h3>
-          <p class="text-muted mt-2">A pragmatic JavaScript micro-framework for DOM manipulation, state, and AJAX without virtual DOM.</p>
+          <p class="text-muted mt-2">A pragmatic JavaScript micro-framework for DOM manipulation, reactivity, AJAX, routing, forms, and state management without virtual DOM.</p>
         </div>
         <div class="p-6 bg-white rounded-xl border">
           <h3 class="font-semibold text-lg">Zenith CSS</h3>
-          <p class="text-muted mt-2">A semantic CSS foundation with utility classes for layout, spacing, and components.</p>
+          <p class="text-muted mt-2">A semantic CSS foundation with utility classes for layout, components, theming, animations, and responsive design based on Material Design 3.</p>
         </div>
       </div>
       <h3 class="text-2xl font-semibold mb-4">Philosophy</h3>
-      <p class="text-muted mb-4">Zenith returns to fundamentals to address modern framework complexity. It promotes explicit code, composable helpers, and full-stack transparency. Why single-file? To eliminate bloat, enable quick onboarding, and encourage deep understanding over abstraction.</p>
-      <h3 class="text-2xl font-semibold mb-4">Comparison Mindset</h3>
-      <p class="text-muted">Unlike heavy frameworks, Zenith avoids magic methods and external deps. It's closer to a "batteries-included" micro-framework like Flask or Sinatra, but unified across PHP/JS/CSS for seamless development.</p>
+      <p class="text-muted mb-4">Zenith addresses modern framework complexity by returning to fundamentals: explicit code, composable helpers, and full-stack transparency. Single-file design eliminates bloat, enables quick onboarding, and encourages deep understanding.</p>
+      <h3 class="text-2xl font-semibold mb-4">Why Zenith?</h3>
+      <p class="text-muted">Unlike heavy frameworks with magic methods and dependencies, Zenith is a unified "batteries-included" micro-framework across PHP/JS/CSS, similar to Flask or Sinatra but with enterprise-grade features for seamless development.</p>
     </section>
 
     <!-- PHP FRAMEWORK SECTION -->
     <section x-show="section==='php'" x-transition class="max-w-5xl mx-auto px-6 py-24">
       <h2 class="text-4xl font-bold mb-6">Zenith PHP Framework</h2>
       <p class="mt-6 text-muted mb-8">
-        Implemented entirely in <code>zen.php</code>, providing routing, controllers, views, middleware, config, security, ORM, auth, caching, queue, events, logging, and CLI—without dependencies.
+        Implemented in <code>zen.php</code> (version 3.1.6), a single-file framework providing MVC, routing, DI container, ORM, auth, validation, caching, queue, events, mail, logging, CLI, and security without dependencies.
       </p>
-      <h3 class="mt-10 text-2xl font-semibold mb-4">Core Concepts</h3>
-      <ul class="text-muted space-y-2 mb-8">
-        <li>Single entry point and DI container</li>
-        <li>Explicit routing with parameters</li>
-        <li>Minimal MVC with ActiveRecord ORM</li>
-        <li>Composable helpers (validation, auth, etc.)</li>
-        <li>File-based cache, session, queue</li>
-        <li>Event dispatcher and middleware pipeline</li>
+      <h3 class="mt-10 text-2xl font-semibold mb-4">Overview</h3>
+      <p class="text-muted mb-4">Zenith PHP compresses capabilities of Django, Rails, Flask, and CodeIgniter into one file. It uses modern PHP 8+ features for pragmatic minimalism.</p>
+      <h3 class="text-2xl font-semibold mb-4">Architecture</h3>
+      <p class="text-muted mb-4">Request lifecycle: Bootstrap → Router → Middleware → Controller → Model/DB → View → Response. Patterns: DI, MVC, ActiveRecord, Pipeline, Observer.</p>
+      <ul class="text-muted space-y-2 mb-8 list-disc list-inside">
+        <li>ZenApp: Application kernel</li>
+        <li>ZenContainer: DI container</li>
+        <li>ZenRouter: HTTP routing with params/middleware</li>
+        <li>ZenRequest/Response: Input/output handling</li>
+        <li>ZenView: Templating with layouts/sections</li>
+        <li>ZenDatabase: PDO wrapper with query builder</li>
+        <li>ZenModel: ActiveRecord ORM</li>
       </ul>
-      <h4 class="text-xl font-semibold mb-4">Architecture Overview</h4>
-      <p class="text-muted mb-4">Request flow: Router → Middleware → Controller → Model/DB → View → Response. Uses DI, MVC, and Observer patterns.</p>
-      <h4 class="text-xl font-semibold mb-4">Example: Basic Routing</h4>
+      <h4 class="text-xl font-semibold mb-4">Routing</h4>
       <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;?php
 require 'zen.php';
 $app = new ZenApp();
-$app->getRouter()->get('/', function() {
-    return 'Hello, Zen Framework!';
-});
+$app->getRouter()->get('/', fn() => 'Hello Zenith!');
+$app->getRouter()->get('/users/{id}', fn($id) => "User $id");
 $app->run();</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Configuration</h4>
-      <p class="text-muted mb-4">Environment-based config via <code>.env</code>, loaded into <code>ZenConfig</code>.</p>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>'app' => [
-    'name' => 'Zen Application',
-    'env' => $_ENV['APP_ENV'] ?? 'production',
-    // ... database, cache, session, mail, etc.
-],</code></pre>
-      <h4 class="text-xl font-semibold mb-4">ORM & Models</h4>
-      <p class="text-muted mb-4">ActiveRecord-style with query builder.</p>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>class User extends ZenModel {
-    protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password'];
+      <h4 class="text-xl font-semibold mb-4">Controllers</h4>
+      <p class="text-muted mb-4">Closures or classes with DI.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>class UserController {
+  public function show(ZenRequest $request, $id) {
+    return User::find($id);
+  }
 }
-$user = User::find(1);
+$app->getRouter()->get('/users/{id}', [UserController::class, 'show']);</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Views / Templates</h4>
+      <p class="text-muted mb-4">PHP-based with extend/section/include.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;?php extend('layout'); ?&gt;
+&lt;?php section('content'); ?&gt;
+  &lt;h1&gt;Hello, &lt;?= $name ?&gt;!&lt;/h1&gt;
+&lt;?php endSection(); ?&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">ORM Integration</h4>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>class User extends ZenModel {
+  protected $table = 'users';
+  protected $fillable = ['name', 'email'];
+}
+$user = User::create(['name' => 'John']);
 $users = User::where('active', 1)->get();</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Validation</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$validator = ZenValidator::make($request->all(), [
-    'name' => 'required|string|max:255',
-    'email' => 'required|email|unique:users',
-]);</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Authentication</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>if ($auth->attempt(['email' => $email, 'password' => $password])) {
-    return redirect('/dashboard');
-}</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Queue & Events</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$queue->push(SendEmailJob::class, ['user_id' => $user->id]);
-ZenEvent::listen('user.registered', SendWelcomeEmailListener::class);</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Security Features</h4>
+      <ul class="text-muted space-y-2 mb-8 list-disc list-inside">
+        <li>CSRF protection</li>
+        <li>Rate limiting</li>
+        <li>Input sanitization</li>
+        <li>Secure sessions/cookies</li>
+      </ul>
+      <h4 class="text-xl font-semibold mb-4">File Uploads</h4>
+      <p class="text-muted mb-4">Handled via ZenRequest.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$file = request()->file('upload');
+$file->store('uploads');</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Email</h4>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>ZenMail::to('user@example.com')
+  ->subject('Welcome')
+  ->html('&lt;p&gt;Hello!&lt;/p&gt;')
+  ->send();</code></pre>
       <h4 class="text-xl font-semibold mb-4">CLI Utilities</h4>
-      <ul class="text-muted space-y-2 mb-8">
-        <li><code>php zen.php serve</code> - Dev server</li>
+      <ul class="text-muted space-y-2 mb-8 list-disc list-inside">
+        <li><code>php zen.php serve</code> - Start dev server</li>
         <li><code>php zen.php migrate</code> - Run migrations</li>
         <li><code>php zen.php queue:work</code> - Process jobs</li>
+        <li><code>php zen.php health</code> - Health check</li>
       </ul>
     </section>
 
@@ -184,32 +200,37 @@ ZenEvent::listen('user.registered', SendWelcomeEmailListener::class);</code></pr
     <section x-show="section==='js'" x-transition class="max-w-5xl mx-auto px-6 py-24">
       <h2 class="text-4xl font-bold mb-6">Zenith JavaScript Framework</h2>
       <p class="mt-6 text-muted mb-8">
-        A lightweight, dependency-free framework combining reactivity, AJAX, DOM utils, and CSS integration. No virtual DOM; focuses on progressive enhancement and brevity.
+        Zenith JS (zen.js, version 3.1.6) is a lightweight, dependency-free framework combining reactivity, AJAX, DOM utils, icons, and CSS integration. Inspired by Alpine.js, HTMX, AJX.js, W3.js.
       </p>
-      <h3 class="mt-10 text-2xl font-semibold mb-4">Design Goals</h3>
+      <h3 class="mt-10 text-2xl font-semibold mb-4">Purpose and Design Goals</h3>
       <ul class="text-muted space-y-2 mb-8 list-disc list-inside">
         <li>No virtual DOM; direct manipulation</li>
         <li>Minimal abstraction; readable source</li>
-        <li>Reactivity via <code>zen-b</code>, <code>zen-t</code></li>
-        <li>AJAX with <code>zen-ajax</code>; pub/sub events</li>
-        <li>Components, routing, i18n, auth</li>
+        <li>Progressive enhancement</li>
+        <li>Python/Ruby-like brevity</li>
+        <li>Shallow learning curve</li>
       </ul>
-      <h4 class="text-xl font-semibold mb-4">Example: Basic Event Handling</h4>
+      <p class="text-muted mb-4">Differs from React/Vue: No build step, no components as classes, focuses on attributes for reactivity (zen-b, zen-t, zen-show, zen-x).</p>
+      <h4 class="text-xl font-semibold mb-4">DOM Manipulation Philosophy</h4>
+      <p class="text-muted mb-4">Direct DOM updates with utilities like zen.on, zen.text, zen.html.</p>
+      <h4 class="text-xl font-semibold mb-4">State Handling</h4>
+      <p class="text-muted mb-4">Reactive bindings via attributes; zen-b for bind, zen-t for text.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;input zen-b="name"&gt;
+&lt;p zen-t="name"&gt;&lt;/p&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Events</h4>
+      <p class="text-muted mb-4">Pub/sub with client.events; zen-on for element events.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>zen.on('#btn', 'click', () => client.flash.success('Clicked'));</code></pre>
+      <h4 class="text-xl font-semibold mb-4">AJAX</h4>
+      <p class="text-muted mb-4">zen-ajax attribute for HTMX-like; client.ajax for programmatic.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;button zen-ajax="get:/data" zen-target="#result"&gt;Load&lt;/button&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Code Examples</h4>
       <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>zen.ready(() => {
-  zen.on('#btn', 'click', () => {
-    zen.text('#output', 'Hello Zenith');
+  zen.on('#form', 'submit', e => {
+    e.preventDefault();
+    client.ajax.post('/submit', client.form.serialize('#form'), res => {
+      client.flash.success('Submitted!');
+    });
   });
-});</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Reactivity & Templates</h4>
-      <p class="text-muted mb-4">Use <code>zen-tpl</code> for dynamic content; <code>zen-each</code> for loops.</p>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;div zen-each="users" zen-t="name"&gt;&lt;/div&gt;</code></pre>
-      <h4 class="text-xl font-semibold mb-4">AJAX & Forms</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>client.ajax.post('/api/users', {name: 'John'}, (data) => {
-  client.flash.success('User created');
-});</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Routing</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>client.router.route('/users/:id', (params) => {
-  // Load user
 });</code></pre>
     </section>
 
@@ -217,90 +238,70 @@ ZenEvent::listen('user.registered', SendWelcomeEmailListener::class);</code></pr
     <section x-show="section==='css'" x-transition class="max-w-5xl mx-auto px-6 py-24">
       <h2 class="text-4xl font-bold mb-6">Zenith CSS Framework</h2>
       <p class="mt-6 text-muted mb-8">
-        Semantic, class-light system for layout, spacing, and components. Complements Tailwind with readable names; framework-agnostic.
+        Zenith CSS (zen.css, version 3.3) is a semantic, class-light system for layout, components, and styling. Based on Material Design 3, with utilities, themes, and animations. Complements or replaces Tailwind parts.
       </p>
-      <h3 class="mt-10 text-2xl font-semibold mb-4">Philosophy</h3>
+      <h3 class="mt-10 text-2xl font-semibold mb-4">Design Philosophy</h3>
       <ul class="text-muted space-y-2 mb-8 list-disc list-inside">
-        <li>Readable class names (e.g., <code>.zen-container</code>)</li>
+        <li>Readable class names (zen- prefix)</li>
         <li>Minimal overrides; strong defaults</li>
-        <li>Material Design 3 theming; dark mode</li>
+        <li>Material Design 3 theming; light/dark/high-contrast</li>
         <li>Responsive utilities; animations</li>
+        <li>Framework-agnostic</li>
       </ul>
-      <h4 class="text-xl font-semibold mb-4">Example: Layout</h4>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;div class="zen-container zen-flex zen-justify-center"&gt;
-  &lt;h1 class="zen-title"&gt;Zenith&lt;/h1&gt;
-&lt;/div&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Utility Classes</h4>
+      <p class="text-muted mb-4">Spacing (m-*, p-*), flex/grid, text, etc.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;div class="zen-container zen-flex zen-justify-center"&gt;Content&lt;/div&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">Layout System</h4>
+      <p class="text-muted mb-4">zen-flex, zen-grid, responsive cols (zen-grid-cols-2).</p>
       <h4 class="text-xl font-semibold mb-4">Components</h4>
-      <p class="text-muted mb-4">Includes cards, buttons, modals, alerts, pagination with <code>zen-</code> prefix.</p>
-      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>.zen-btn-primary {
-  background: var(--zen-primary);
-  color: white;
-}</code></pre>
-      <h4 class="text-xl font-semibold mb-4">Theming</h4>
-      <p class="text-muted">CSS vars for primary/secondary colors; supports dark/high-contrast modes.</p>
+      <p class="text-muted mb-4">zen-btn-*, zen-card, zen-alert-*, zen-icon, etc.</p>
+      <pre class="mt-4 mb-8 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;button class="zen-btn-primary"&gt;Click&lt;/button&gt;</code></pre>
+      <h4 class="text-xl font-semibold mb-4">How it Complements Tailwind</h4>
+      <p class="text-muted">Provides semantic components and MD3 theming; use with Tailwind for utilities.</p>
     </section>
 
     <!-- DOCUMENTATION / BOOK SECTION -->
     <section x-show="section==='docs'" x-transition class="max-w-6xl mx-auto px-6 py-24 prose prose-slate max-w-none">
       <h2 class="text-4xl font-bold mb-6">Documentation & Book</h2>
       <p class="text-muted max-w-3xl mb-12">
-        Full inline documentation from <code>zen-docs.php</code>, structured for sequential reading or reference.
+        Comprehensive documentation and course book from <code>zen-docs.php</code>, structured as a sequential learning path.
       </p>
       <article class="space-y-10 max-w-4xl prose prose-lg">
         <section>
           <h3 class="text-2xl font-semibold">Introduction</h3>
-          <p class="text-muted">Zenith provides a solid foundation for web apps with simplicity and clarity. Production-safe, easy to extend. Features: Config, DI, Routing, Middleware, Templating, ORM, Auth, Validation, Caching, Queue, Events, Logging, CLI.</p>
+          <p class="text-muted">Zen Framework is a single-file, enterprise-grade PHP framework compressing capabilities of Django, Rails, Flask, CodeIgniter. Principles: Simplicity, production-ready security, explicit behavior.</p>
+          <p class="text-muted">Features: MVC, ORM, templating, auth, validation, caching, queue, events, logging, CLI.</p>
         </section>
         <section>
-          <h3 class="text-2xl font-semibold">Getting Started</h3>
-          <ol class="text-muted space-y-2">
-            <li>Download <code>zen.php</code>, place in project root.</li>
-            <li>Create <code>.env</code> for config.</li>
-            <li>Define routes in <code>index.php</code>.</li>
-            <li>Set up server (Apache/Nginx).</li>
-            <li>Generate APP_KEY.</li>
-          </ol>
-          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$app->getRouter()->get('/', function() {
-    return 'Hello, Zen Framework!';
-});
-$app->run();</code></pre>
+          <h3 class="text-2xl font-semibold">Installation & Setup</h3>
+          <p class="text-muted">Requirements: PHP 8+, PDO. Structure: zen.php, .env, index.php, views/, storage/.</p>
+          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>APP_ENV=development
+DB_HOST=localhost
+# etc.</code></pre>
+          <p class="text-muted">Entry: require 'zen.php'; $app = new ZenApp(); $app->run();</p>
         </section>
         <section>
-          <h3 class="text-2xl font-semibold">Core Concepts</h3>
-          <p class="text-muted">Request lifecycle: Router → Middleware → Controller → Model → View → Response. Components: ZenApp, ZenContainer (DI), ZenRouter, ZenRequest/Response, ZenModel (ORM), ZenView, ZenValidator, ZenAuth, ZenCache.</p>
-          <h4>Routing Example</h4>
-          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$app->getRouter()->get('/users/{id}', function($id) {
-    $user = User::find($id);
-    return view('user', ['user' => $user]);
-});</code></pre>
-          <h4>Models</h4>
-          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>class User extends ZenModel {
-    protected $table = 'users';
-    protected $fillable = ['name', 'email'];
-}
-$users = User::query()->where('active', 1)->get();</code></pre>
-          <h4>Views</h4>
-          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>&lt;?php extend('layouts.app') ?&gt;
-&lt;?php section('content') ?&gt;
-    &lt;h1&gt;Welcome&lt;/h1&gt;
-&lt;?php endSection() ?&gt;</code></pre>
+          <h3 class="text-2xl font-semibold">Architecture Overview</h3>
+          <p class="text-muted">Lifecycle: Request → Router → Middleware → Controller → Model → View → Response.</p>
+          <p class="text-muted">Patterns: DI, ActiveRecord, MVC, Pipeline, Observer.</p>
+        </section>
+        <section>
+          <h3 class="text-2xl font-semibold">Core Components</h3>
+          <p class="text-muted">ZenApp: Kernel. ZenContainer: DI. ZenRouter: Routes.</p>
+          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$app->getRouter()->get('/path', fn() => 'Response');</code></pre>
+          <p class="text-muted">ZenModel: ORM. ZenView: Templates.</p>
         </section>
         <section>
           <h3 class="text-2xl font-semibold">Advanced Topics</h3>
-          <p class="text-muted">Middleware, security (CSRF, rate limiting), performance (caching), deployment. Validation: required, email, min:max, unique. Auth: attempt, user, check. Queue: push, process. Events: listen, dispatch.</p>
-          <h4>Validation</h4>
-          <pre class="mt-4 p-4 bg-slate-900 text-slate-100 rounded-xl text-sm overflow-x-auto"><code>$validator = ZenValidator::make($request->all(), [
-    'email' => 'required|email|unique:users',
-    'password' => 'required|min:6|confirmed',
-]);</code></pre>
+          <p class="text-muted">Middleware, security (CSRF, rate limit), performance (caching), deployment.</p>
         </section>
         <section>
           <h3 class="text-2xl font-semibold">Best Practices</h3>
-          <p class="text-muted">Use explicit bindings in DI; validate all inputs; leverage events for decoupling; cache queries; secure with middleware.</p>
+          <p class="text-muted">Explicit DI bindings, validate inputs, use events for decoupling, cache queries, secure middleware.</p>
         </section>
         <section>
           <h3 class="text-2xl font-semibold">Deployment</h3>
-          <p class="text-muted">Set APP_ENV=production; run migrations; configure server rewrites. CLI: <code>php zen.php health</code>.</p>
+          <p class="text-muted">Set APP_ENV=production, run migrations, server rewrites. CLI: php zen.php health.</p>
         </section>
       </article>
     </section>
@@ -308,20 +309,28 @@ $users = User::query()->where('active', 1)->get();</code></pre>
     <!-- TUTORIALS SECTION -->
     <section x-show="section==='tutorials'" x-transition class="max-w-5xl mx-auto px-6 py-24">
       <h2 class="text-4xl font-bold mb-6">Tutorials</h2>
-      <p class="text-muted mb-8">Step-by-step path from beginner to advanced, using real examples.</p>
+      <p class="text-muted mb-8">Step-by-step learning path from beginner to advanced, based on framework features.</p>
       <div class="space-y-8">
         <div class="bg-white p-6 rounded-xl border">
-          <h3 class="text-2xl font-semibold mb-2">Beginner: Simple Todo App (PHP + Views)</h3>
-          <p class="text-muted mb-4">1. Define route: <code>$app->get('/todos', fn() => view('todos', ['todos' => Todo::all()]));</code> 2. Create view with loop. 3. Add form for POST.</p>
-          <pre class="mt-2 p-4 bg-slate-900 text-slate-100 rounded text-sm"><code>&lt;ul&gt;&lt;?php foreach($todos as $todo): ?&gt;&lt;li&gt;&lt;?=$todo->text?&gt;&lt;/li&gt;&lt;?php endforeach; ?&gt;&lt;/ul&gt;</code></pre>
+          <h3 class="text-2xl font-semibold mb-2">Beginner: Basic Routing and Views</h3>
+          <p class="text-muted mb-4">Set up routes and render views.</p>
+          <pre class="mt-2 p-4 bg-slate-900 text-slate-100 rounded text-sm"><code>&lt;?php
+require 'zen.php';
+$app = new ZenApp();
+$app->getRouter()->get('/', fn() => view('home'));
+$app->run();</code></pre>
         </div>
         <div class="bg-white p-6 rounded-xl border">
-          <h3 class="text-2xl font-semibold mb-2">Intermediate: Authenticated User Dashboard</h3>
-          <p class="text-muted mb-4">1. Use ZenAuth: <code>if($auth->attempt($creds)) { redirect('/dashboard'); }</code> 2. Protect route with middleware. 3. Display user data.</p>
+          <h3 class="text-2xl font-semibold mb-2">Intermediate: ORM and Auth</h3>
+          <p class="text-muted mb-4">Create models, query data, handle authentication.</p>
+          <pre class="mt-2 p-4 bg-slate-900 text-slate-100 rounded text-sm"><code>class User extends ZenModel {}
+if (auth()->attempt(['email' => $email, 'password' => $pass])) {}</code></pre>
         </div>
         <div class="bg-white p-6 rounded-xl border">
-          <h3 class="text-2xl font-semibold mb-2">Advanced: Queued Email with JS Interactivity</h3>
-          <p class="text-muted mb-4">1. Push job: <code>$queue->push(SendEmailJob::class, $data);</code> 2. JS: <code>zen.on('form', 'submit', () => client.ajax.post('/send', formData));</code> 3. Handle response with flash.</p>
+          <h3 class="text-2xl font-semibold mb-2">Advanced: Queue and Events</h3>
+          <p class="text-muted mb-4">Push jobs, dispatch events.</p>
+          <pre class="mt-2 p-4 bg-slate-900 text-slate-100 rounded text-sm"><code>queue()->push(Job::class, $data);
+ZenEvent::dispatch('event', $data);</code></pre>
         </div>
       </div>
     </section>
@@ -329,55 +338,39 @@ $users = User::query()->where('active', 1)->get();</code></pre>
     <!-- API REFERENCE SECTION -->
     <section x-show="section==='api'" x-transition class="max-w-6xl mx-auto px-6 py-24">
       <h2 class="text-4xl font-bold mb-6">API Reference</h2>
-      <p class="text-muted mb-8">Client-side searchable reference (use browser search). Grouped by layer.</p>
+      <p class="text-muted mb-8">Grouped by layer; use browser search for quick access.</p>
       <div class="space-y-12">
         <div>
           <h3 class="text-2xl font-semibold mb-4">PHP API</h3>
           <div class="grid md:grid-cols-2 gap-4 text-sm">
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">ZenApp</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>new ZenApp()</code> - Kernel</li>
-                <li><code>$app->run()</code> - Execute</li>
-                <li><code>$app->getRouter()</code> - Router</li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>new ZenApp() - Initialize</li>
+                <li>run() - Execute</li>
+                <li>getRouter() - Get router</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">ZenModel</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>::find($id)</code></li>
-                <li><code>::where($col, $op, $val)->get()</code></li>
-                <li><code>save()</code>, <code>delete()</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>::find($id)</li>
+                <li>::where($col, $val)->get()</li>
+                <li>save(), delete()</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">ZenValidator</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>::make($data, $rules)</code></li>
-                <li><code>fails()</code>, <code>errors()</code></li>
-                <li>Rules: required, email, min:6, unique:table</li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>::make($data, $rules)</li>
+                <li>fails(), errors()</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">ZenAuth</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>attempt($creds)</code></li>
-                <li><code>user()</code>, <code>check()</code></li>
-                <li><code>login($user)</code>, <code>logout()</code></li>
-              </ul>
-            </div>
-            <div class="bg-white p-4 rounded border">
-              <h4 class="font-medium mb-2">ZenEvent</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>::listen($event, $listener)</code></li>
-                <li><code>::dispatch($event, $data)</code></li>
-              </ul>
-            </div>
-            <div class="bg-white p-4 rounded border">
-              <h4 class="font-medium mb-2">ZenQueue</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>push($job, $data)</code></li>
-                <li><code>process($max)</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>attempt($creds)</li>
+                <li>user(), check()</li>
               </ul>
             </div>
           </div>
@@ -387,30 +380,17 @@ $users = User::query()->where('active', 1)->get();</code></pre>
           <div class="grid md:grid-cols-2 gap-4 text-sm">
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">zen</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>zen.ready(fn)</code></li>
-                <li><code>zen.on(sel, event, fn)</code></li>
-                <li><code>zen.text(sel, text)</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>ready(fn)</li>
+                <li>on(sel, event, fn)</li>
+                <li>text(sel, text)</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">client.ajax</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>post(url, data, cb)</code></li>
-                <li><code>get(url, cb)</code></li>
-              </ul>
-            </div>
-            <div class="bg-white p-4 rounded border">
-              <h4 class="font-medium mb-2">client.router</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>route(path, fn)</code></li>
-              </ul>
-            </div>
-            <div class="bg-white p-4 rounded border">
-              <h4 class="font-medium mb-2">client.flash</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>success(msg)</code></li>
-                <li><code>error(msg)</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>post(url, data, cb)</li>
+                <li>get(url, cb)</li>
               </ul>
             </div>
           </div>
@@ -420,24 +400,24 @@ $users = User::query()->where('active', 1)->get();</code></pre>
           <div class="grid md:grid-cols-3 gap-4 text-sm">
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">Layout</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>zen-container</code></li>
-                <li><code>zen-flex</code>, <code>zen-grid</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>zen-container</li>
+                <li>zen-flex, zen-grid</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">Spacing</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>m-4</code>, <code>p-4</code></li>
-                <li><code>mt-2</code>, <code>mb-4</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>m-*, p-*</li>
+                <li>mt-*, mb-*</li>
               </ul>
             </div>
             <div class="bg-white p-4 rounded border">
               <h4 class="font-medium mb-2">Components</h4>
-              <ul class="text-muted space-y-1">
-                <li><code>zen-btn-primary</code></li>
-                <li><code>zen-card</code></li>
-                <li><code>zen-alert-success</code></li>
+              <ul class="text-muted space-y-1 list-disc list-inside">
+                <li>zen-btn-primary</li>
+                <li>zen-card</li>
+                <li>zen-alert-success</li>
               </ul>
             </div>
           </div>
@@ -448,7 +428,7 @@ $users = User::query()->where('active', 1)->get();</code></pre>
 
   <!-- FOOTER -->
   <footer class="border-t border-slate-200 py-8 text-center text-muted">
-    © <span id="year">2025</span> Zenith Framework · Crafted by John Mwirigi Mahugu
+    © <span id="year"></span> Zenith Framework · Crafted by John Mwirigi Mahugu
   </footer>
 
   <!-- Vanilla JS for copy-to-clipboard -->
