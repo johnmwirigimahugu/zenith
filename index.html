@@ -1,11 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Zenith.js</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Software Architect & Technical Writer Portfolio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Define custom colors based on a purplish palette for a modern, dark theme */
+        :root {
+            --zen-background: #0B1121; /* Dark Blue/Slate */
+            --zen-primary: #7C3AED;    /* Violet 600 - Main Brand Color */
+            --zen-secondary: #C084FC;  /* Fuchsia 400 - Accent/Highlight Color */
+            --zen-text-light: #F3E8FF; /* Violet 50 - Primary Text */
+            --zen-card: #1E293B;       /* Slate 800 - Card Background */
+            --zen-accent-cta: #FACC15; /* Amber 400 - High-contrast CTA */
+        }
+
+        body {
+            background-color: var(--zen-background);
+            color: var(--zen-text-light);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Applying custom colors to Tailwind classes for consistency */
+        .text-zen-primary { color: var(--zen-primary); }
+        .bg-zen-primary { background-color: var(--zen-primary); }
+        .bg-zen-card { background-color: var(--zen-card); }
+        .hover-bg-zen-primary:hover { background-color: var(--zen-primary); }
+        .ring-zen-secondary { --tw-ring-color: var(--zen-secondary); }
+        .text-zen-accent-cta { color: var(--zen-accent-cta); }
+        .bg-zen-accent-cta { background-color: var(--zen-accent-cta); }
+    </style>
 </head>
-<body>
-  <h1>Zenith.js</h1>
-  <p>A minimalist JavaScript framework.</p>
+<body class="antialiased selection:bg-zen-secondary selection:text-zen-card">
+
+    <header class="p-4 md:p-6 shadow-2xl bg-zen-card/80 backdrop-blur-md sticky top-0 z-50 border-b border-zen-primary/50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-extrabold tracking-tighter text-white">
+                ARCHITECT<span class="text-zen-primary">.DEV</span>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#hero" class="text-sm font-medium hover:text-zen-secondary transition duration-300">Home</a>
+                <a href="#expertise" class="text-sm font-medium hover:text-zen-secondary transition duration-300">Expertise</a>
+                <a href="#projects" class="text-sm font-medium hover:text-zen-secondary transition duration-300">Projects</a>
+                <a href="#teaching" class="text-sm font-medium hover:text-zen-secondary transition duration-300">Academia</a>
+                <a href="#contact" class="text-sm font-medium hover:text-zen-secondary transition duration-300">Contact</a>
+            </nav>
+            <button class="md:hidden text-white hover:text-zen-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-32">
+
+        <section id="hero" class="pt-16 pb-12 flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-3/5 space-y-8">
+                <span class="text-lg font-semibold uppercase tracking-widest text-zen-secondary">Architect | Designer | Professor | Author</span>
+                <h1 class="text-7xl font-extrabold leading-tight tracking-tighter">
+                    I Design <span class="text-zen-primary">Enduring</span> & <br> Performant Software.
+                </h1>
+                <p class="text-xl text-zen-text-light/80 max-w-2xl">
+                    I specialize in building foundational, scalable, and minimalist systems. My work bridges technical rigor with academic clarity, driving enterprise value through simple, predictable architecture.
+                </p>
+                <div class="flex space-x-6 pt-4">
+                    <a href="#contact" class="px-8 py-4 bg-zen-accent-cta text-zen-card font-bold rounded-lg text-lg shadow-xl shadow-zen-accent-cta/30 transition duration-300 transform hover:scale-[1.02] hover:shadow-zen-accent-cta/50">
+                        Consulting Inquiry
+                    </a>
+                    <a href="https://github.com/yourusername" target="_blank" class="px-8 py-4 border border-zen-primary/50 text-zen-secondary font-semibold rounded-lg hover:bg-zen-primary/20 transition duration-300">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.082-.742.082-.727.082-.727 1.205.084 1.839 1.237 1.839 1.237 1.07 1.83 2.809 1.303 3.493.996.108-.775.418-1.303.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.305-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.292-1.552 3.3-.322 3.3-.322.651 1.652.241 2.871.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.923.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576c4.765-1.589 8.196-6.085 8.196-11.385 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub Profile
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-2/5 flex justify-center md:justify-end">
+                <div class="w-64 h-64 md:w-96 md:h-96 bg-zen-secondary/10 rounded-full flex items-center justify-center border-4 border-zen-secondary/50 shadow-2xl shadow-zen-primary/40 p-2 transform transition duration-700 hover:rotate-3">
+                    <span class="text-3xl font-bold text-zen-secondary">Photo/Avatar</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="expertise" class="py-16 border-t border-zen-card">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <span class="text-sm font-semibold uppercase tracking-widest text-zen-primary mb-2">Architectural Philosophy</span>
+                    <h2 class="text-4xl font-bold text-white mb-6">The Zen of Code: Clarity Over Cleverness</h2>
+                    <p class="text-lg text-zen-text-light/80 mb-6">
+                        My approach is rooted in minimalism. I reject unnecessary abstraction and complexity. The goal is code that is easy to read, easy to debug, and requires minimal runtime overhead—making performance an inherent property, not a constant optimization task.
+                    </p>
+                    <p class="text-md text-zen-text-light/70 italic border-l-4 border-zen-secondary pl-4">
+                        "If the design cannot be explained simply and clearly to a mid-level engineer, it is fundamentally flawed. Simplicity is the ultimate sophistication."
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-zen-card p-6 rounded-lg shadow-xl hover:shadow-zen-primary/30 transition duration-300">
+                        <h3 class="text-xl font-semibold mb-1 text-zen-secondary">Framework Design</h3>
+                        <p class="text-sm text-zen-text-light/70">Designing Core Engines, Runtimes, and Component Models.</p>
+                    </div>
+                    <div class="bg-zen-card p-6 rounded-lg shadow-xl hover:shadow-zen-primary/30 transition duration-300">
+                        <h3 class="text-xl font-semibold mb-1 text-zen-secondary">System Scalability</h3>
+                        <p class="text-sm text-zen-text-light/70">Stateless services, horizontal scaling, and microkernel architectures.</p>
+                    </div>
+                    <div class="bg-zen-card p-6 rounded-lg shadow-xl hover:shadow-zen-primary/30 transition duration-300">
+                        <h3 class="text-xl font-semibold mb-1 text-zen-secondary">Technical Documentation</h3>
+                        <p class="text-sm text-zen-text-light/70">Creating comprehensive, copy-paste ready, enterprise-grade documentation.</p>
+                    </div>
+                    <div class="bg-zen-card p-6 rounded-lg shadow-xl hover:shadow-zen-primary/30 transition duration-300">
+                        <h3 class="text-xl font-semibold mb-1 text-zen-secondary">Data Engineering</h3>
+                        <p class="text-sm text-zen-text-light/70">Data Layer optimization, Caching Strategy, and ORM/NoSQL integration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-16 border-t border-zen-card">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold uppercase tracking-widest text-zen-primary mb-2">Portfolio</span>
+                <h2 class="text-5xl font-extrabold text-white">Featured Enterprise Systems</h2>
+                <p class="text-lg text-zen-text-light/70 max-w-3xl mx-auto mt-4">
+                    High-impact projects ranging from financial systems to complex developer tooling.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="bg-zen-card p-8 rounded-xl shadow-2xl flex flex-col lg:flex-row gap-8 hover:ring-2 ring-zen-secondary/50 transition duration-500">
+                    <div class="lg:w-3/4 space-y-4">
+                        <h3 class="text-3xl font-bold text-white flex items-center">
+                            <svg class="w-6 h-6 mr-3 text-zen-accent-cta" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            Zenith Financial Reporting System (ZFRS)
+                        </h3>
+                        <p class="text-md text-zen-secondary font-mono">Architecture: Layered Monolith | Tech: Node.js, TypeScript, PostgreSQL, Serverless Functions</p>
+                        <p class="text-zen-text-light/80">
+                            Led the design and migration of a legacy system to a modern, event-driven financial reporting platform. Focused heavily on data consistency, performance through partial hydration, and securing the data API with custom JWT and RBAC implementation.
+                        </p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">Event-Driven</span>
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">RBAC</span>
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">Microservices</span>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/4 flex items-center lg:justify-end">
+                        <a href="https://github.com/your-project-zfrs" target="_blank" class="text-zen-secondary hover:text-zen-primary font-semibold flex items-center border border-zen-secondary/50 px-4 py-2 rounded-lg transition duration-300">
+                            View Case Study 
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-zen-card p-8 rounded-xl shadow-2xl flex flex-col lg:flex-row gap-8 hover:ring-2 ring-zen-secondary/50 transition duration-500">
+                    <div class="lg:w-3/4 space-y-4">
+                        <h3 class="text-3xl font-bold text-white flex items-center">
+                            <svg class="w-6 h-6 mr-3 text-zen-accent-cta" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2h-4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V6l-6-6zm-1 10h-2v2h2v-2zm-1 5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zM14 8h-4V4h4v4z"/></svg>
+                            Modular Component Delivery Platform (MCDP)
+                        </h3>
+                        <p class="text-md text-zen-secondary font-mono">Architecture: Micro-Frontends | Tech: Webpack Module Federation, React, Vanilla JS</p>
+                        <p class="text-zen-text-light/80">
+                            Architected a platform to embed small, isolated UI components into any host application (Micro-Frontend). Implemented a zero-dependency injection system to ensure components could be loaded without polluting the host's global environment.
+                        </p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">Module Federation</span>
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">Zero-Conflict</span>
+                            <span class="text-xs px-3 py-1 bg-zen-primary/30 rounded-full">TypeScript</span>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/4 flex items-center lg:justify-end">
+                        <a href="https://github.com/your-project-mcdp" target="_blank" class="text-zen-secondary hover:text-zen-primary font-semibold flex items-center border border-zen-secondary/50 px-4 py-2 rounded-lg transition duration-300">
+                            View Whitepaper
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="teaching" class="py-16 border-t border-zen-card">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="md:col-span-1">
+                    <span class="text-sm font-semibold uppercase tracking-widest text-zen-secondary mb-2">Academia & Literacy</span>
+                    <h2 class="text-4xl font-bold text-white mb-6">Bridging Theory with Production</h2>
+                    <p class="text-lg text-zen-text-light/80">
+                        My role as a university professor informs my architectural work, ensuring all designs are theoretically sound, well-documented, and easily teachable.
+                    </p>
+                </div>
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-zen-card p-6 rounded-lg shadow-lg border-l-4 border-zen-primary hover:border-zen-secondary transition duration-300">
+                        <h3 class="text-2xl font-semibold text-white">Advanced Framework Design Course (CSC 499)</h3>
+                        <p class="text-md text-zen-text-light/70 mt-1">
+                            **University of Technology**, Lead Lecturer (2020-Present). Developed the curriculum focused on deep framework internals, VDOM vs. RTM trade-offs, and state management theories.
+                        </p>
+                    </div>
+                    <div class="bg-zen-card p-6 rounded-lg shadow-lg border-l-4 border-zen-primary hover:border-zen-secondary transition duration-300">
+                        <h3 class="text-2xl font-semibold text-white">Documentation Style Guide (D.S.G. V2.1)</h3>
+                        <p class="text-md text-zen-text-light/70 mt-1">
+                            Authored the definitive, multi-million word internal style guide for a Fortune 500 engineering division, standardizing all architectural and technical documentation globally.
+                        </p>
+                    </div>
+                    <div class="pt-4">
+                        <a href="mailto:your.professional.email@example.com?subject=Technical%20Writing%20Inquiry" class="text-zen-accent-cta font-semibold flex items-center hover:text-zen-secondary transition duration-300">
+                            Request Documentation Consultation 
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16">
+            <div class="bg-zen-card p-10 rounded-xl shadow-2xl shadow-zen-secondary/20 border-t border-zen-secondary/30">
+                <blockquote class="text-3xl italic font-light text-zen-text-light/90 text-center">
+                    "The architectural decisions were characterized by a rare combination of **academic precision and production efficiency**. The framework's simplicity drastically cut our onboarding time and reduced runtime errors by 40%."
+                </blockquote>
+                <p class="text-center mt-6 text-lg font-semibold text-zen-secondary">— Jane Doe, CTO, Global Tech Solutions</p>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 border-t border-zen-card">
+            <div class="text-center mb-10">
+                <span class="text-sm font-semibold uppercase tracking-widest text-zen-primary mb-2">Contact</span>
+                <h2 class="text-5xl font-extrabold text-white">Let's Discuss Your Architectural Challenge</h2>
+            </div>
+            
+            <div class="max-w-xl mx-auto bg-zen-card p-8 rounded-xl shadow-2xl border border-zen-primary/50">
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-zen-text-light/90 mb-1">Full Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-zen-background border border-zen-primary/50 rounded-lg focus:ring-2 ring-zen-secondary/50 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-zen-text-light/90 mb-1">Work Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-zen-background border border-zen-primary/50 rounded-lg focus:ring-2 ring-zen-secondary/50 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-zen-text-light/90 mb-1">Project Summary / Question</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-zen-background border border-zen-primary/50 rounded-lg focus:ring-2 ring-zen-secondary/50 focus:outline-none" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full px-4 py-3 bg-zen-primary text-white font-bold rounded-lg text-lg hover:bg-zen-primary/90 transition duration-300 transform hover:scale-[1.01]">
+                        Send Message
+                    </button>
+                </form>
+                <p class="text-center text-sm text-zen-text-light/60 mt-4">I aim to respond to all inquiries within 48 hours.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="p-6 mt-16 border-t border-zen-card bg-zen-card/50">
+        <div class="max-w-7xl mx-auto text-center text-sm text-zen-text-light/60">
+            &copy; <span id="year"></span> Senior Software Architect. All Rights Reserved. | <a href="mailto:your.professional.email@example.com" class="hover:text-zen-secondary">Email</a> | <a href="https://linkedin.com/in/yourlinkedin" target="_blank" class="hover:text-zen-secondary">LinkedIn</a>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
